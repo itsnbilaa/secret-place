@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for You</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Efek fade-in untuk teks */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Ukuran teks yang lebih kecil */
+        #typing-text {
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        /* Menyembunyikan tombol pertama kali */
+        #button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div> <!-- Efek bintang -->
+    <img src="rabbit.gif" class="rabbit"> <!-- Boneka kelinci animasi -->
+    
+    <div class="container">
+        <h2 id="typing-text" class="fade-in">aku punya sesuatu buat kamu sidik. awalnya aku ga kepikiran bikin kaya gini, tapi waktu itu aku tiba tiba kepikiran "apa aku bikinin website aja ya buat sidik? siapa tau dia suka" AHAHAHA, udah kepikiran dari lama sih tapi akhirnya jadi juga. maaf ya ga terlalu bagus (soalnya cape coy ngodingnya), dan maaf ya kalo alay..</h2>
+        <button id="button" onclick="nextPage()">pencet ini ya sidik</button>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan tombol setelah teks selesai fade-in
+        window.onload = function() {
+            const text = document.getElementById("typing-text");
+            text.addEventListener('animationend', function() {
+                document.getElementById("button").style.display = "block"; // Menampilkan tombol setelah fade-in
+            });
+        }
+
+        function nextPage() {
+            window.location.href = "next.html"; // Halaman selanjutnya
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This Song is For You</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #ebd3ff;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 50px;
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+
+        .song-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .song {
+            width: 180px;
+            background-color: #c5b8ff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .song:hover {
+            transform: scale(1.05);
+        }
+
+        .song img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .song-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #272952;
+        }
+
+        .music-container {
+            margin-top: 50px;
+        }
+
+        .lyrics {
+            margin-top: 30px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #393567;
+            color: rgb(253, 251, 255);
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #726ab5;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PLAYLIST OF YOU</h1>
+
+    <div class="song-container">
+        <div class="song" onclick="playSong('song1')">
+            <img src="birds-of-a-feather.png" alt="Song 1 Cover">
+            <div class="song-name">BIRDS OF A FEATHER</div>
+        </div>
+        <div class="song" onclick="playSong('song2')">
+            <img src="no1-party-anthem.png" alt="Song 2 Cover">
+            <div class="song-name">NO.1 PARTY ANTHEM</div>
+        </div>
+        <div class="song" onclick="playSong('song3')">
+            <img src="gorgeous.png" alt="Song 3 Cover">
+            <div class="song-name">GORGEOUS</div>
+        </div>
+        <div class="song" onclick="playSong('song4')">
+            <img src="love.png" alt="Song 4 Cover">
+            <div class="song-name">LOVE</div>
+        </div>
+        <div class="song" onclick="playSong('song5')">
+            <img src="fearless.jpg" alt="Song 5 Cover">
+            <div class="song-name">FEARLESS</div>
+        </div>
+        <div class="song" onclick="playSong('song6')">
+            <img src="sampai-jadi-debu.png" alt="Song 6 Cover">
+            <div class="song-name">SAMPAI JADI DEBU</div>
+        </div>
+        <div class="song" onclick="playSong('song7')">
+            <img src="tak-ada-ujungnya.png" alt="Song 7 Cover">
+            <div class="song-name">TAK ADA UJUNGNYA</div>
+        </div>
+    </div>
+
+    <div class="music-container">
+        <div id="player"></div>
+        <div id="lyrics" class="lyrics"></div>
+        <div class="controls">
+            <button id="pauseButton" onclick="pauseSong()">Pause</button>
+        </div>
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        const songs = {
+            song1: {
+                src: 'BIRDS OF A FEATHER.mp3',
+                lyrics: `I want you to stay
+                Til I'm in the grave
+                Til I rot away, dead and buried
+                Til I'm in the casket you carry
+                If you go, I'm goin' too
+                Cause it was always you (Alright)
+                And if I'm turnin' blue, please don't save me
+                Nothin' left to lose without my baby
+                Birds of a feather
+                We should stick together, I know
+                I said I'd never
+                Think I wasn't better alone
+                Can't change the weather
+                Might not be forever, but if it's forever, it's even better
+                And I don't know what I'm crying for
+                I don't think I could love you more
+                It might not be long, but, baby, I'll love you til the day that I die
+                Til the day that I die
+                Til the light leaves my eyes
+                Til the day that I die
+                I want you to see how you look to me
+                You wouldn't believe if I told ya
+                You would keep the compliments I throw ya
+                But you're so full of shit
+                Tell me it's a bit
+                Say you don't see it, your mind's polluted
+                Say you wanna quit, don't be stupid
+                And I don't know what I'm crying for
+                I don't think I could love you more
+                Might not be long, but, baby, I don't wanna say goodbye
+                Birds of a feather
+                We should stick together, I know (Til the day that I die)
+                I said I'd never
+                Think I wasn't better alone (Til the light leaves my eyes)
+                Can't change the weather
+                Might not be forever (Til the day that I die)
+                But if it's forever it's even better
+                I knew you in another life
+                You had that same look in your eyes
+                I love you, don't act so surprised`,
+                cover: 'birds-of-a-feather.png',
+            },
+
+            song2: {
+                src: 'No.1 Party Anthem.mp3',
+                lyrics: `So you're on the prowl wondering whether she left already or not
+            Leather jacket, collar popped like Cantona
+            Never knowing when to stop
+            Sunglasses indoors, par for the course
+            Lights in the floors and sweat on the walls
+            Cages and poles
+
+            Call off the search for your soul, or put it on hold again
+            She's having a sly indoor smoke
+            And she calls the folks who run this her oldest friends
+            Sipping a drink and laughing at imaginary jokes
+            As all the signals are sent, her eyes invite you to approach
+            And it seems as though those lumps in your throat
+            That you just swallowed have got you going
+
+            [Chorus:]
+            Come on, come on, come on
+            Come on, come on, come on
+            Number one party anthem
+
+            She's a certified mind blower, knowing full well that I don't
+            May suggest there's somewhere from which you might know her
+            Just to get the ball to roll
+            Drunken monologues, confused because
+            It's not like I'm falling in love I just want you to do me no good
+            And you look like you could
+
+            [Chorus x2]
+
+            The look of love - the rush of blood
+            The "She's with me" - the Gallic shrug
+            The shutterbugs - the Camera Plus
+            The black and white - the colour dodge
+            The good time girl - the cubicles
+            The house of fun - the number one party anthem
+
+            Come on, come on, come on
+            Before the moment's gone
+            Number one party anthem`,
+            cover: 'no1-party-anthem.png',
+        },
+
+        song3: {
+            src: 'Gorgeous.mp3',
+            lyrics: `You should take it as a compliment
+            That I got drunk and made fun of the way you talk
+            You should think about the consequence
+            Of your magnetic field being a little too strong
+            And I got a boyfriend, he's older than us
+            He's in the club doing, I don't know what
+            You're so cool, it makes me hate you so much (I hate you so much)
+
+            Whisky on ice, Sunset and Vine
+            You've ruined my life by not being mine
+
+            You're so gorgeous
+            I can't say anything to your face
+            'Cause look at your face (Gorgeous)
+            And I'm so furious
+            At you for making me feel this way
+            But what can I say?
+            You're gorgeous
+
+            You should take it as a compliment
+            That I'm talking to everyone here but you (but you, but you)
+            And you should think about the consequence
+            Of you touching my hand in a darkened room (dark room, dark room)
+            If you got a girlfriend, I'm jealous of her
+            But if you're single that's honestly worse
+            'Cause you're so gorgeous it actually hurts
+            (Honey, it hurts)
+
+            Ocean blue eyes looking in mine
+            I feel like I might sink and drown and die
+
+            You're so gorgeous
+            I can't say anything to your face (To your face)
+            'Cause look at your face (Look at your face, gorgeous)
+            And I'm so furious
+            At you for making me feel this way (Feel this way)
+            But what can I say?
+            You're gorgeous
+
+            You make me so happy it turns back to sad
+            There's nothing I hate more than what I can't have
+            And you are so gorgeous it makes me so mad (Mmh)
+            You make me so happy it turns back to sad (Yeah)
+            There's nothing I hate more than what I can't have and
+            Guess I'll just stumble on home to my cats (Yeugh), alone
+            Unless, you wanna come along? (Oh)
+
+            You're so gorgeous
+            I can't say anything to your face (To your face)
+            'Cause look at your face (Look at your face, gorgeous)
+            And I'm so furious (I'm so furious)
+            At you for making me feel this way (Feel this way)
+            But what can I say? (I say)
+            You're gorgeous
+
+            You make me so happy it turns back to sad (Yeah)
+            There's nothing I hate more than what I can't have
+            And you are so gorgeous it makes me so mad (Mmh)
+            You're gorgeous
+            You make me so happy it turns back to sad (It turns back to sad)
+            There's nothing I hate more than what I can't have (What I can have)
+            You are so gorgeous it makes me so mad (Mmh)
+            You're gorgeous.`,
+            cover: 'gorgeous.png',
+        },
+
+            song4: {
+                src: 'love-wave to earth.mp3',
+                lyrics: `Saram sai saram
+Baram sai baram
+Gakjaui yeomwoni baraego
+Deotchildoeeo
+
+Bari daeul mankeum gudeojimyeon
+Biroso nae sesangi doeeojwo
+
+Naui jageun maeumdo
+Geu ane jaran naeumdo
+Buseojigo gudeojigo
+Noganaerigonamyeon
+Geujeseoya boineun naui yeongwon
+
+Saram sai sarang
+Modu hamkke moyeoseo
+Yeongwoneul barago
+Mom maeum mudeonaemyeon
+
+Biroso uriui sesangi wanbyeokae
+Sarangeuro
+Sarangeuro
+
+Naui jageun maeumdo
+Geu ane jageun padocheoreom
+Buseojigo millyeowaseon
+Nege noganaerigo
+Geujeseoya boineun naui yeongwon`,
+                cover: 'love.png',
+            },
+            song5: {
+                src: 'fearless.mp3',
+                lyrics: `There's somethin' 'bout the way
+The street looks when it's just rained
+There's a glow off the pavement
+You walk me to the car
+And you know I wanna ask you to dance right there
+In the middle of the parking lot
+Yeah
+Oh yeah
+
+We're drivin' down the road
+I wonder if you know
+I'm tryin' so hard not to get caught up now
+But you're just so cool
+Run your hands through your hair
+Absentmindedly makin' me want you
+
+And I don't know how it gets better than this
+You take my hand and drag me head first
+Fearless
+And I don't know why but with you I'd dance in a storm in my best dress
+Fearless
+
+So, baby, drive slow
+'Til we run out of road in this one horse town
+I wanna stay right here in this passenger's seat
+You put your eyes on me
+In this moment now capture it, remember it
+
+'Cause I don't know how it gets better than this
+You take my hand and drag me head first
+Fearless
+And I don't know why but with you I'd dance in a storm in my best dress
+Fearless
+
+Well, you stood there with me in the doorway
+My hands shake
+I'm not usually this way
+But you pull me in and I'm a little more brave
+It's the first kiss
+It's flawless
+Really something
+It's fearless
+
+Oh yeah
+
+'Cause I don't know how it gets better than this
+You take my hand and drag me head first
+Fearless
+And I don't know why but with you I'd dance in a storm in my best dress
+Fearless
+
+'Cause I don't know how it gets better than this
+You take my hand and drag me head first
+Fearless
+And I don't know why but with you I'd dance in a storm in my best dress
+Fearless
+
+Oh-oh
+Oh yeah`,
+                cover: 'fearless.jpg',
+            },
+            song6: {
+                src: 'sampai jadi debu.mp3',
+                lyrics: `Badai Tuan telah berlalu
+Salahkah ku menuntut mesra?
+Tiap pagi menjelang
+Kau di sampingku
+Ku aman ada bersamamu
+
+Selamanya
+Sampai kita tua
+Sampai jadi debu
+Ku di liang yang satu
+Ku di sebelahmu
+
+Badai Puan telah berlalu
+Salahkah ku menuntut mesra?
+Tiap taufan menyerang
+Kau di sampingku
+Kau aman ada bersamaku
+
+Selamanya
+Sampai kita tua
+Sampai jadi debu
+Ku di liang yang satu
+Ku di sebelahmu`,
+                cover: 'sampai-jadi-debu.png',
+            },
+
+            song7: {
+                src: 'tak ada ujungnya.mp3',
+                lyrics: `Kutemukan satu sisi dalam diri
+Warna-warni penuhi jiwaku
+Meski kadang hati ini pun bertanya
+Apa mungkin benar ini nyata
+
+Kau hadir di balik kokohnya tembok hatiku
+Kau runtuhkan kerasnya diriku
+
+Kan ku jaga di luas hatiku
+Di dalam samudera perasaan
+Tak terkira entah sampai kapan
+Tak ada ujungnya
+Mungkin hanya mati yang memisah
+
+Sejak hari itu ku merasa lagi
+Perasaan yang telah lama mati
+Tak pernah ku sangka selama ini
+Kau sanggup menghidupkan lagi
+
+Kau hadir di balik kokohnya tembok hatiku
+Kau runtuhkan kerasnya diriku
+
+Kan ku jaga di luas hatiku
+Di dalam samudera perasaan
+Tak terkira entah sampai kapan
+Tak ada ujungnya
+Mungkin hanya mati yang memisah
+
+Kan ku jaga di luas hatiku
+Di dalam samudera perasaan
+Tak terkira entah sampai kapan
+Tak ada ujungnya
+Mungkin hanya mati yang memisah
+
+Mungkin hanya mati yang memisah`,
+                cover: 'tak-ada-ujungnya.png',
+            },
+        };
+
+        function playSong(songId) {
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+
+            const song = songs[songId];
+            currentAudio = new Audio(song.src);
+            currentAudio.play();
+
+            document.getElementById('player').innerHTML = `
+                <img src="${song.cover}" alt="${songId} Cover" style="width: 100px; margin-top: 20px;">
+            `;
+            document.getElementById('pauseButton').style.display = 'inline-block';
+
+            const lyricsContainer = document.getElementById('lyrics');
+            lyricsContainer.innerHTML = song.lyrics; // Display all lyrics at once
+        }
+
+        function pauseSong() {
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+        }
+    </script>
+<div class="playlist-text">
+    <p>ini beberapa playlist dari banyaknya playlist yang aku bikin buat kamu, kalo kamu mau dengerin boleh bangett!! 
+    btw udah ya segini dulu aja, sebenernya mau lebih banyak tapi cape aku nya awoakwakwok, next time deh aku bikin lagi, baybayy see uuu. sekali lagi happy birthday ya sidik, bahagia selalu!</p>
+</div>
+
+<button class="back-home" onclick="window.location.href='index.html'">Back to Home</button>
+</div>
+</body>
+</html>
